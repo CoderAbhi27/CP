@@ -1,0 +1,72 @@
+vvi adj;
+vi par, dp, cnt, ans;
+
+int dfs(int i){
+    if(dp[i]!=-1) return dp[i];
+    dp[i]=0;
+    for(auto j:adj[i]){
+        if(j==par[i]) continue;
+        par[j]=i;
+        dp[i]+= dfs(j)+cnt[j];
+        cnt[i]+= cnt[j];
+    }
+    return dp[i];
+}
+
+void dfs_rerooting(int i){
+    ans[i]=dp[i];
+    int v1=dp[i], c1=cnt[i];
+    for(auto j:adj[i]){
+        if(j==par[i]) continue;
+        int v2=dp[j], c2=cnt[j];
+        dp[i]-=dp[j]+cnt[j];
+        cnt[i]-=cnt[j];
+        dp[j]+= dp[i] + cnt[i];
+        cnt[j]+=cnt[i];
+        dfs_rerooting(j);
+        dp[i]=v1;
+        cnt[i]=c1;
+        dp[j]=v2;
+        cnt[j]=c2;
+    }
+}
+
+void bfs_rerooting(int s, int n){
+    queue<int> q;
+    q.push(s);
+    ans[s]=dp[s];
+    while(!q.empty()){
+        int i=q.front();
+        q.pop();
+        for(auto j:adj[i]){
+            if(j==par[i]) continue;
+            dp[j]+= (dp[i]-dp[j]-cnt[j]) + (n-cnt[j]);
+            ans[j]=dp[j];
+            q.push(j);
+        }
+    }
+}
+
+
+void solve(){
+    int n;
+    cin>>n;
+    adj.assign(n+1, vi(0));
+    rep(i,1,n){
+        int a,b; cin>>a>>b;
+        adj[a].pb(b);
+        adj[b].pb(a);
+    }
+    dp.assign(n+1,-1);
+    cnt.assign(n+1,1);
+    par.assign(n+1,0);
+    dfs(1);
+
+    ans.assign(n+1,0);
+
+    dfs_rerooting(1);
+    //bfs_rerooting(1,n);
+
+    rep(i,1,n+1) cout<<ans[i]<<' ';
+
+}
