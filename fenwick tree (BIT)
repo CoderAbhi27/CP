@@ -1,0 +1,32 @@
+vector<int> bit(n+1,0);
+
+void create(vi &a)
+{
+    rep(i,1,n+1)
+    {
+        bit[i]+=a[i];
+        int p=i+(i&(-i));
+        if(p<=n) bit[p]+=bit[i];
+    }
+}
+
+void update(int k,int val)
+{
+  while(k<=n)
+  {
+    bit[k]+=val;
+    k+=(k&(-k));
+  }
+}
+
+int prsum(int k)
+{
+  int res=0;
+  while(k>0)
+  {
+    res+=bit[k];
+    k-=(k&(-k));
+  }
+  return res;
+}
+
