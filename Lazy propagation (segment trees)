@@ -1,0 +1,53 @@
+vi a, seg, lazy;
+int n;
+
+void upd(int id, int l, int r, int val)
+{
+    seg[id]+=val; //seg[id]+=(r-l)*val; //for sum
+    lazy[id]+=val;
+}
+
+void shift(int id, int l, int r)
+{
+    if(lazy[id]==0) return;
+    int mid=(l+r)/2;
+    upd(id*2,l,mid,lazy[id]);
+    upd(id*2+1,mid,r,lazy[id]);
+    lazy[id]=0;
+}
+
+
+void build(int id=1, int l=0, int r=n)
+{
+    if(r-l==1){
+        seg[id]=a[l];
+        return;
+    }
+    int mid=(l+r)/2;
+    build(2*id,l,mid);
+    build(2*id+1,mid,r);
+    seg[id]=min(seg[2*id], seg[2*id+1]);
+}
+
+int query(int x, int y, int id=1, int l=0, int r=n)
+{
+    if(y<=l || x>=r) return INF;
+    if(x<=l && r<=y) return seg[id];
+    shift(id,l,r);
+    int mid=(l+r)/2;
+    return min(query(x,y,id*2,l,mid), query(x,y,id*2+1,mid,r));
+}
+
+void increase(int x, int y, int val, int id=1, int l=0, int r=n)
+{
+    if(y<=l || x>=r) return;
+    if(x<=l && r<=y){
+        upd(id,l,r,val);
+        return;
+    }
+    shift(id,l,r);
+    int mid=(l+r)/2;
+    increase(x,y,val,id*2,l,mid);
+    increase(x,y,val,id*2+1,mid,r);
+    seg[id]= min(seg[id*2], seg[id*2+1]);
+}
