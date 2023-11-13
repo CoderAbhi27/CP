@@ -1,0 +1,31 @@
+#define pii pair<int,int> 
+int dist[n];
+void dijkstra(int s)
+{  
+priority_queue<pii, vector<pii>,greater<pair<int,int>>> pq;
+for(int i=0; i<n; i++)
+{
+  dist[i]=INT64_MAX; 
+}
+vector<bool> vis(n,false);
+dist[s]=0;
+pq.push({dist[s], s});
+while (!pq.empty())
+{
+    int u=pq.top().second;
+    pq.pop();
+    if (vis[u]) continue;
+    vis[u]=true;
+    for(auto p: adj[u])
+    {
+        int v=p.first;
+        int w=p.second;
+        if(!vis[v] && dist[u] + w < dist[v]) 
+        {
+            dist[v] =dist[u] + w;
+            parent[v] = u;   
+            pq.push({dist[v], v});
+        }
+    }
+}
+}
