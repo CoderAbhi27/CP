@@ -1,0 +1,32 @@
+struct node{
+    int freq;
+    node* child[26];
+    node(){
+        freq=0;
+        for(int i=0;i<26;i++) child[i]=NULL;
+    }
+};
+
+node* root=new node();
+
+void add(string s){
+    node* tmp=root;
+    for(int i=0;i<s.size();i++){
+        if(tmp->child[s[i]-'a']==NULL){
+           tmp->child[s[i]-'a']=new node();
+        }
+        tmp=tmp->child[s[i]-'a'];
+        tmp->freq++;
+    }
+}
+
+int calc(string s){
+    node* tmp=root;
+    for(int i=0;i<s.size();i++){
+        if(tmp->child[s[i]-'a']==NULL){
+           return 0;
+        }
+        tmp=tmp->child[s[i]-'a'];
+    }
+    return tmp->freq;
+}
