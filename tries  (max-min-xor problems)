@@ -30,3 +30,33 @@ int calc(string s){
     }
     return tmp->freq;
 }
+
+//add a number in binary
+void add(int n){
+    node* tmp=root;
+    for(int i=20;i>=0;i--){
+        bool b=n&(1LL<<i);
+        if(tmp->child[b]==NULL){
+           tmp->child[b]=new node();
+        }
+        tmp=tmp->child[b];
+        tmp->freq++;
+    }
+}
+
+int maxxor(int n)
+{
+    node* tmp=root;
+    int ans=0;
+    for(int i=20;i>=0;i--){
+        bool b=!(n&(1LL<<i));
+        if(tmp->child[b]==NULL){
+           tmp=tmp->child[!b];
+        }
+        else{
+            tmp=tmp->child[b];
+            ans|=1LL<<i;
+        }
+    }
+    return ans;
+}
