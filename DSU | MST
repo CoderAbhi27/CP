@@ -1,0 +1,58 @@
+vi par, rnk;
+
+void make_set(int n)
+{
+    rep(i,1,n+1){
+        par[i]=i;
+        rnk[i]=1;
+    }
+}
+
+int find_set(int x)
+{
+    if(par[x]==x) return x;
+    return par[x]=find_set(par[x]);
+}
+
+void union_set(int a, int b)
+{
+    int p1=find_set(a), p2=find_set(b);
+    if(p1==p2) return;
+    if(rnk[p1]>rnk[p2]){
+        par[p2]=p1;
+        rnk[p1]+=rnk[p2];
+    }
+    else{
+        par[p1]=p2;
+        rnk[p2]+=rnk[p1];
+    }
+}
+
+//MST
+void solve(){
+    int n,m;
+    cin>>n>>m;
+    vector<pair<int,pii>> edges;
+    while(m--){
+        int u,v,w; cin>>u>>v>>w;
+        edges.pb({w,{u,v}});
+    }
+    
+    par.assign(n+1,0);
+    rnk.assign(n+1,1);
+    make_set(n);
+    
+    sort(all(edges));
+    int ans=0, cnt=0;
+    for(auto e:edges){
+        int w=e.ff, u=e.ss.ff, v=e.ss.ss;
+        if(find_set(u)==find_set(v)) continue;
+        union_set(u,v);
+        ans+=w;
+        cnt++;
+        if(cnt==n-1) break;
+    }
+    
+    if(cnt==n-1) cout<<ans<<"\n";
+    else cout<<"IMPOSSIBLE\n";
+}
