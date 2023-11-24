@@ -1,4 +1,4 @@
-#fine func min
+#define func min
 vi a, seg;
 int n;
 
