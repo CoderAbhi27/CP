@@ -1,3 +1,4 @@
+#define func min
 vi a, seg, lazy;
 int n;
 
@@ -26,18 +27,20 @@ void build(int id=1, int l=0, int r=n)
     int mid=(l+r)/2;
     build(2*id,l,mid);
     build(2*id+1,mid,r);
-    seg[id]=min(seg[2*id], seg[2*id+1]);
+    seg[id]=func(seg[2*id], seg[2*id+1]);
 }
 
+//[x,y)
 int query(int x, int y, int id=1, int l=0, int r=n)
 {
-    if(y<=l || x>=r) return INF;
+    if(y<=l || x>=r) return INF; //return 0; //for sum
     if(x<=l && r<=y) return seg[id];
     shift(id,l,r);
     int mid=(l+r)/2;
-    return min(query(x,y,id*2,l,mid), query(x,y,id*2+1,mid,r));
+    return func(query(x,y,id*2,l,mid), query(x,y,id*2+1,mid,r));
 }
 
+//[x,y)
 void increase(int x, int y, int val, int id=1, int l=0, int r=n)
 {
     if(y<=l || x>=r) return;
@@ -49,5 +52,5 @@ void increase(int x, int y, int val, int id=1, int l=0, int r=n)
     int mid=(l+r)/2;
     increase(x,y,val,id*2,l,mid);
     increase(x,y,val,id*2+1,mid,r);
-    seg[id]= min(seg[id*2], seg[id*2+1]);
+    seg[id]= func(seg[id*2], seg[id*2+1]);
 }
