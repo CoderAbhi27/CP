@@ -1,3 +1,4 @@
+#fine func min
 vi a, seg;
 int n;
 
@@ -10,15 +11,16 @@ void build(int id=1, int l=0, int r=n)
     int mid=(l+r)/2;
     build(2*id,l,mid);
     build(2*id+1,mid,r);
-    seg[id]=min(seg[2*id], seg[2*id+1]);
+    seg[id]=func(seg[2*id], seg[2*id+1]);
 }
 
+//[x,y)
 int query(int x, int y, int id=1, int l=0, int r=n)
 {
     if(y<=l || x>=r) return INF;
     if(x<=l && r<=y) return seg[id];
     int mid=(l+r)/2;
-    return min(query(x,y,id*2,l,mid), query(x,y,id*2+1,mid,r));
+    return func(query(x,y,id*2,l,mid), query(x,y,id*2+1,mid,r));
 }
 
 void update(int i, int val, int id=1, int l=0, int r=n)
@@ -31,5 +33,5 @@ void update(int i, int val, int id=1, int l=0, int r=n)
     int mid=(l+r)/2;
     if(i<mid) update(i,val,2*id,l,mid);
     else update(i,val,2*id+1,mid,r);
-    seg[id]=min(seg[2*id], seg[2*id+1]);
+    seg[id]=func(seg[2*id], seg[2*id+1]);
 }
