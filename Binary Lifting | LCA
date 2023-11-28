@@ -3,11 +3,11 @@ vvi adj, par;
 vi lev;
 
 //using binary lifting to find 2^jth parent of i
-void dfs(int i, int p){
+void dfs(int i, int p=-1){
     par[i][0]=p;
     rep(j,1,x+1)
     {
-        if(par[i][j-1]<=1) break;
+        if(par[i][j-1]<1) break;
         par[i][j] = par[ par[i][j-1] ][j-1];
     }
     for(auto j:adj[i]){
@@ -36,4 +36,12 @@ int lca(int a, int b){
         }
     }
     return par[a][0];
+}
+
+void solve(){
+    int n; 
+    cin>>n;
+    adj.assign(n+1,vi(0));
+    par.assign(n+1,vi(x+1,-1));
+    lev.assign(n+1,0);
 }
