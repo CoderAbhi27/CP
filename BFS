@@ -1,13 +1,13 @@
 int n;
-vi lvl;
+vi dist;
 vector<vector<int>> adj;
 
 void bfs(int source){
     vector<int> vis(n+1,0);
-    lvl.assign(n+1,0);
+    dist.assign(n+1,0);
     queue<int> q;
     vis[source] = 1;
-    lvl[source] = 0;
+    dist[source] = 0;
     q.push(source);
     while(!q.empty()){
         int node = q.front();
@@ -15,7 +15,7 @@ void bfs(int source){
         for(auto child: adj[node]){
             if(vis[child]) continue;
             vis[child] = 1;
-            lvl[child] = 1 + lvl[node];
+            dist[child] = 1 + dist[node];
             q.push(child);
         }
     }
