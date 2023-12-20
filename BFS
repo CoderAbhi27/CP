@@ -1,6 +1,6 @@
 int n;
 vi lvl;
-vector<vector<pii>> adj;
+vector<vector<int>> adj;
 
 void bfs(int source){
     vector<int> vis(n+1,0);
