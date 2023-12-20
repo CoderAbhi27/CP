@@ -1,5 +1,5 @@
 int x_max=20;  //2^20>1e6
-vvi adj, par;
+vvi adj, par;  //par[i][j]=-1 initially
 vi lev;
 
 //using binary lifting to find 2^jth parent of i
@@ -7,7 +7,7 @@ void dfs(int i, int p=-1){
     par[i][0]=p;
     rep(j,1,x_max+1)
     {
-        if(par[i][j-1]<1) break;
+        if(par[i][j-1]<0) break;
         par[i][j] = par[ par[i][j-1] ][j-1];
     }
     for(auto j:adj[i]){
@@ -21,6 +21,7 @@ int kth_par(int i, int k){
     for(int j=x_max;j>=0;j--)
     {
         if(k&(1LL<<j)) i=par[i][j];
+        if(i==-1) break;
     }
     return i;
 }
@@ -44,4 +45,6 @@ void solve(){
     adj.assign(n+1,vi(0));
     par.assign(n+1,vi(x_max+1,-1));
     lev.assign(n+1,0);
+
+    //dfs(s);
 }
