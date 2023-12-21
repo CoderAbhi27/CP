@@ -1,7 +1,7 @@
 int n;
 vector<int> bit;
 
-//a should have 1-based indexing. (n+1) size
+// a should have 1-based indexing. (n+1) size
 void create(vector<int> &a)
 {
     bit.assign(n+1,0);
@@ -12,6 +12,7 @@ void create(vector<int> &a)
     }
 }
 
+// +val at index k
 void update(int k,int val)
 {
   while(k<=n){
@@ -20,6 +21,7 @@ void update(int k,int val)
   }
 }
 
+// prefix-sum upto index k
 int prsum(int k)
 {
   int res=0;
