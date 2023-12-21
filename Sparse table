@@ -1,26 +1,33 @@
-//pre-computation
-const int MAXK=25; // For N<= 107
-int st[ N ] [ MAXK + 1 ];
-for(int i=0; i<N; i++)
-{
-    st[i][0] = arr[i];
+int MAXK=25; // For N<= 1e7
+vector<vector<int>> st;
+
+//query function
+int func(int a, int b){
+    return min(a,b);
 }
-for(int k=1; k <= MAXK ; k++)
-{
-    for(int i=0; i+(1LL<<k)<=N; i++)
-    {
-        st[i][k] = st[i][k-1] + st[ i + (1LL<<(k-1)) ][k-1]; 
+
+//pre-computation
+void build(vector<int> &vec){
+    int N = vec.size();
+    st.assign(N, vector<int>(MAXK, 0));
+    for(int i=0; i<N; i++){
+        st[i][0] = vec[i];
+    }
+    for(int k=1; k <= MAXK ; k++){
+        for(int i=0; i+(1LL<<k) <= N; i++){
+            st[i][k] = func(st[i][k-1] , st[ i + (1LL<<(k-1)) ][k-1]);
+        }
     }
 }
 
 //answering queries for range [L,R]
-int sum=0;
-for(int k= MAXK; k>=0; k--)
-{ 
-    if ( (1LL<<k) <= R - L + 1 )
-    {
-        sum += st[L][k];
-        L += 1LL<<k;
+int query(int L, int R){
+    int ans=st[L][0];
+    for(int k= MAXK; k>=0; k--){
+        if ( (1LL<<k) <= R-L+1 ){
+            ans = func(ans, st[L][k]);
+            L += 1LL<<k;
+        }
     }
+    return ans;
 }
-
