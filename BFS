@@ -4,7 +4,7 @@ vector<vector<int>> adj;
 
 void bfs(vi source){
     vector<int> vis(n+1,0);
-    dist.assign(n+1,0);
+    dist.assign(n+1,-1);
     queue<int> q;
     for(auto s:source){
         vis[s] = 1;
@@ -18,6 +18,34 @@ void bfs(vi source){
             if(vis[child]) continue;
             vis[child] = 1;
             dist[child] = 1 + dist[node];
+            q.push(child);
+        }
+    }
+}
+
+//2D BFS
+int n, sz;
+vvi dist;
+map<pii, vector<pii>> adj;
+//vvi adj;
+
+void bfs(vpii source){
+    vvi vis(n+1,vi(sz+1,0));
+    dist.assign(n+1,vi(sz+1,-1));
+    queue<pii> q;
+    for(auto s:source){
+        vis[s.ff][s.ss] = 1;
+        q.push(s);
+        dist[s.ff][s.ss] = 0;
+    }
+    
+    while(!q.empty()){
+        pii node = q.front();
+        q.pop();
+        for(auto child: adj[node]){
+            if(vis[child.ff][child.ss]) continue;
+            vis[child.ff][child.ss] = 1;
+            dist[child.ff][child.ss] = 1 + dist[node.ff][node.ss];
             q.push(child);
         }
     }
