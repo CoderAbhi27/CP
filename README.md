@@ -1,10 +1,13 @@
 # CP
 
-//the following macros are used in the codes:-\n
+//the following macros are used in the codes:-
 
-#define int long long\n
+#define int long long
+
 #define INF INT64_MAX
+
 #define pb push_back
+
 #define all(x) (x).begin(),(x).end()
 #define rall(x) (x).rbegin(),(x).rend()
 #define mii map<int, int>
