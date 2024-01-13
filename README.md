@@ -1,8 +1,8 @@
 # CP
 
-//the following macros are used in the codes:-
+//the following macros are used in the codes:-\n
 
-#define int long long
+#define int long long\n
 #define INF INT64_MAX
 #define pb push_back
 #define all(x) (x).begin(),(x).end()
