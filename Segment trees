@@ -36,6 +36,19 @@ public:
     }
     T query(int x, int y){return query(x,y,1,0,n);}
 
+    //(kth-one) smallest index(0-based) i, such that prsum(i)=k
+    T query2(int k, int id, int l, int r){
+        if(seg[id]<k) return -1;
+        if(k==0) return l-1;
+        if(r-l==1){
+            return l;
+        }
+        int mid=(l+r)/2;
+        if(seg[id*2]<k) return query2(k-seg[id*2], id*2+1, mid, r);
+        return query2(k, id*2, l, mid);
+    }
+    T query2(int k){return query2(k,1,0,n);}
+
     void update(int i, T val, int id, int l, int r){
         if(r-l==1){
             a[i]=val;
