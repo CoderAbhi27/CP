@@ -1,0 +1,23 @@
+//returns LPS array of size (2*n+1)
+vector<int> manacher(string &s){
+    int n=s.length();
+    string str="#";
+    for(auto ch:s){
+        str+=ch;
+        str+='#';
+    }
+    vector<int> lps(2*n+1, 0);
+    int c=0, r=0;
+    for(int i=1;i<=2*n;i++){
+        int cl=2*c-i;
+        lps[i]=max(0LL, min(r-i, lps[cl]) );
+        int j=i+lps[i]+1;
+        while(j<=2*n && 2*i-j>=0 && str[j]==str[2*i-j]){
+            lps[i]++;
+            j++;
+            c=i;
+        }
+        r=c+lps[c];
+    }
+    return lps;
+}
