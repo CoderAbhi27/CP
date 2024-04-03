@@ -34,3 +34,34 @@ int prsum(int k)
     }
     return res;
 }
+
+//smallest i such that prsum(0,i)>=val
+int query1(int val){
+    int n=bit.size();
+    int sz=log2(n)+1;
+    int ans=0;
+    for(int j=sz;j>=0;j--){
+        int x=ans+(1LL<<j);
+        if(x<=n && bit[x] < val){
+            val-=bit[x];
+            ans=x;
+        }
+    }
+    ans++;
+    return ans;
+}
+
+//largest i such that prsum(0,i)>=val
+int query2(int val){
+    int n=bit.size();
+    int sz=log2(n)+1;
+    int ans=0;
+    for(int j=sz;j>=0;j--){
+        int x=ans+(1LL<<j);
+        if(x<=n && bit[x] <= val){
+            val-=bit[x];
+            ans=x;
+        }
+    }
+    return ans;
+}
