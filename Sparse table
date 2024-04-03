@@ -1,4 +1,4 @@
-int MAXK=25; // For N<= 1e7
+int MAXK=20; // For N<= 1e6
 vector<vector<int>> st;
 
 //query function
@@ -20,7 +20,18 @@ void build(vector<int> &vec){
     }
 }
 
-//answering queries for range [L,R]
+//for idempotesnt func (min, max, gcd, or, and)
+const int N=1e6;
+int lg[N+1];
+
+//[L,R] in O(1)
+int query(int L, int R){
+    int j=lg[R-L+1]; //precompute log2 in main()
+    int ans=func(st[L][j], st[R-(1LL<<j)+1][j]);
+    return ans;
+}
+
+//in general, answering queries for range [L,R]
 int query(int L, int R){
     int ans=st[L][0];
     for(int k= MAXK; k>=0; k--){
@@ -30,4 +41,22 @@ int query(int L, int R){
         }
     }
     return ans;
+}
+
+//max R such that [L,R] >=val
+int query2(int L, int val){
+    int i=L;
+    int res=0;
+    for(int j=MAXK;j>=0;j--){
+        if(i+(1LL<<j)<=n && func(res,st[i][j])>=val){
+            res=func(res, st[i][j]);
+            i=i+(1LL<<j);
+        }
+    }
+    return i-1;
+}
+
+int32_t main(){
+    lg[1]=0;
+    for(int i=2; i<= N ; i++) lg[i] = lg[i/2] + 1;
 }
