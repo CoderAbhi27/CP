@@ -1,0 +1,134 @@
+template <class T=int, class P=int>
+class segTree{
+public:
+    vector<T> a, seg;
+    vector<P> lazy;
+    int n;
+    T nill = T();
+    P nill2 = P(); //0 for int
+
+
+    segTree(int sz, vector<T> arr=vector<T>(0)) {
+        n=sz;
+        if(arr.size()) a=arr;
+        else a=vector<T>(n,nill);
+        seg.assign(4*n, nill);
+        lazy.assign(4*n, nill2);
+        build();
+    }
+
+    T func(T,T);
+    T lazyFunc(T, P, int);
+    P lazyFunc(P, P);
+
+    void upd(int id, int l, int r, P val)
+    {
+        seg[id] = lazyFunc(seg[id], val, r-l); 
+        lazy[id] = lazyFunc(lazy[id], val);
+    }
+
+    void shift(int id, int l, int r)
+    {
+        if(lazy[id]==nill2) return;
+        int mid=(l+r)/2;
+        upd(id*2,l,mid,lazy[id]);
+        upd(id*2+1,mid,r,lazy[id]);
+        lazy[id]=nill2;
+    }
+
+    void build(int id, int l, int r){
+        if(r-l==1){
+            seg[id]=a[l];
+            return;
+        }
+        int mid=(l+r)/2;
+        build(2*id,l,mid);
+        build(2*id+1,mid,r);
+        seg[id]=func(seg[2*id], seg[2*id+1]);
+    }
+    void build(){build(1,0,n);}
+
+    //[x,y)
+    T query(int x, int y, int id, int l, int r){
+        if(y<=l || x>=r) return nill;
+        if(x<=l && r<=y) return seg[id];
+        shift(id, l, r);
+        int mid=(l+r)/2;
+        return func(query(x,y,id*2,l,mid), query(x,y,id*2+1,mid,r));
+    }
+    T query(int x, int y){return query(x,y,1,0,n);}
+
+    //(kth-one) smallest index(0-based) i, such that prsum(i)=k
+    T query2(int k, int id, int l, int r){
+        if(seg[id]<k) return -1;
+        if(k==0) return l-1;
+        if(r-l==1){
+            return l;
+        }
+        shift(id, l, r);
+        int mid=(l+r)/2;
+        if(seg[id*2]<k) return query2(k-seg[id*2], id*2+1, mid, r);
+        return query2(k, id*2, l, mid);
+    }
+    T query2(int k){return query2(k,1,0,n);}
+
+    void update(int i, T val, int id, int l, int r){
+        if(r-l==1){
+            a[i]=val;
+            seg[id]=val;
+            lazy[id]=nill2;
+            return;
+        }
+        shift(id, l, r);
+        int mid=(l+r)/2;
+        if(i<mid) update(i,val,2*id,l,mid);
+        else update(i,val,2*id+1,mid,r);
+        seg[id]=func(seg[2*id], seg[2*id+1]);
+    }
+    void update(int i, T val){update(i,val,1,0,n);}
+
+    //[x,y)
+    void lazyUpdate(int x, int y, P val, int id, int l, int r)
+    {
+        if(y<=l || x>=r) return;
+        if(x<=l && r<=y){
+            upd(id,l,r,val);
+            return;
+        }
+        shift(id,l,r);
+        int mid=(l+r)/2;
+        lazyUpdate(x,y,val,id*2,l,mid);
+        lazyUpdate(x,y,val,id*2+1,mid,r);
+        seg[id]= func(seg[id*2], seg[id*2+1]);
+    }
+    void lazyUpdate(int x, int y, P val) {lazyUpdate(x, y, val, 1, 0, n);}
+
+
+};
+
+
+template <class T, class P>
+T segTree<T, P>::func(T a, T b){
+    return min(a,b);
+    // if(a.mn==b.mn) return T(a.mn, (a.cnt+b.cnt));
+    // if(a.mn<b.mn) return a;
+    // return b;
+}
+
+template <class T, class P>
+T segTree<T, P>::lazyFunc(T a, P b, int sz){
+    return a.mn + b; //for min
+    // return (a+b)*sz; //for sum
+}
+
+template <class T, class P>
+P segTree<T, P>::lazyFunc(P a, P b){
+    return a + b;
+}
+
+struct Node{
+    int mn;
+    int cnt;
+    Node(int xx, int yy){mn=xx; cnt=yy;}
+    Node(){mn=INF; cnt=0;}
+};
