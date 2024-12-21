@@ -1,19 +1,28 @@
-
-vector<pair<int,pii>> e;
-//input all directed weighted edges into e
-//dp[i] = shortest distance to node i
-for(auto &i:dp) i=INF;
-dp[s]=0;
-for(int i=1; i<=n-1; i++)
-{
-     for(auto e: edges)
-     {
-		int u=e.first;
-      	int v=e.second.first;
-      	int w=e.second.second;
-      	if(dp[u]+w <dp[v])
-        {
-             dp[v]=dp[u]+w;
+// input all directed weighted edges into edges
+vector<int> belmon(int s, int n, vector<array<int, 3>> &edges) {
+    // dp[i] = shortest distance to node i
+    vector<int> dp(n + 1, INF);
+    dp[s] = 0;
+    for (int i = 1; i <= n - 1; i++) {
+        for (auto e : edges) {
+            int u = e[0];
+            int v = e[1];
+            int w = e[2];
+            if (dp[u] + w < dp[v]) {
+                dp[v] = dp[u] + w;
+            }
         }
-     }
+    }
+
+    //check infinite negative cycle
+    for (auto e : edges) {
+        int u = e[0];
+        int v = e[1];
+        int w = e[2];
+        if (dp[u] + w < dp[v]) {
+            return vector<int>(n+1, -INF);
+        }
+    }
+
+    return dp;
 }
