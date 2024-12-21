@@ -1,6 +1,8 @@
-//Dinic g(n); create graph with nodes 0 to n-1
-//g.add_edge(u, v, c) -> to add edge from u to v with capacity c
-//g.flow(s, t) -> to get the max flow from sourse s to sink t
+// TC:- O(V^2*E), in general || O(min(E*sqrt(E), E*V^(⅔)) , for unit capacity graph
+
+// Dinic g(n); create graph with nodes 0 to n-1
+// g.add_edge(u, v, c) -> to add edge from u to v with capacity c
+// g.flow(s, t) -> to get the max flow from sourse s to sink t
 
 struct FlowEdge {
     int v, u;
