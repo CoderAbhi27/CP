@@ -29,6 +29,7 @@ public:
 
     //[x,y)
     T query(int x, int y, int id, int l, int r){
+        if(x>=y) return nill;
         if(y<=l || x>=r) return nill;
         if(x<=l && r<=y) return seg[id];
         int mid=(l+r)/2;
