@@ -118,7 +118,7 @@ T segTree<T, P>::func(T a, T b){
 template <class T, class P>
 T segTree<T, P>::lazyFunc(T a, P b, int sz){
     return a.mn + b; //for min
-    // return (a+b)*sz; //for sum
+    // return a + b*sz; //for sum
 }
 
 template <class T, class P>
