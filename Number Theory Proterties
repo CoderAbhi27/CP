@@ -1,0 +1,19 @@
+- Modulo proterties:
+  • (x + y) %m = ((x%m) + (y%m)) %m 
+  • (x - y) %m = ((x%m) - (y%m) + m) %m 
+  • (x * y) %m = ((x%m) * (y%m)) %m 
+  • (x / y) %m = ((x%m) * (y(m-2) %m)) %m   [m should be prime] 
+  • a^x (mod m) = a^(x%(m-1)) (mod m)   [m should be prime] 
+  • a^x (mod m) = a^(x%phi(m)) (mod m)   [any m] [phi(m) = ETF of m]  
+  • (p-1)! (mod p) = -1 (mod p)   [p should be prime] 
+
+- Prime Gap: The max gap between two consecutive prime numbers is roughly 300. 
+
+- Goldbach Conjecture: any even number can be expressed as a sum of 2 primes. 
+
+- Note these: 
+  *Number of primes less than n is n/loge(n). 
+  *Number of prime factors of n is log(n). 
+  *Number of factors of n is cbrt(n). 
+
+- Catalan number recurrence relation: C[0]=1, C[n+1] = SUM(C[i]*C[n-i]), for 0<=i<=n
