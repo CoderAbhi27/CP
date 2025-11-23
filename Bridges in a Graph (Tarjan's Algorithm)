@@ -1,35 +1,41 @@
-vvi adj;
+vector<vector<int>> adj;
 int t;
-vi mnt, tim, vis;
-vector<pii> bridges;
+vector<int> mnt, tim, vis;
+vector<pair<int, int>> bridges;
 
 void dfs(int x, int p) {
     tim[x] = t++;
     mnt[x] = tim[x];
     vis[x] = 1;
-    for(auto i:adj[x]) {
-        if(i == p) continue;
-        if(!vis[i]) dfs(i, x);
+    for (auto i : adj[x]) {
+        if (i == p)
+            continue;
+        if (!vis[i])
+            dfs(i, x);
         mnt[x] = min(mnt[i], mnt[x]);
-        if(mnt[i] > tim[x]) {
-            bridges.pb({x, i});
+        if (mnt[i] > tim[x]) {
+            bridges.push_back({x, i});
         }
     }
 }
 
-void CoderAbhi27(){
+void CoderAbhi27() {
     int n, m;
-    cin>>n>>m;
-    adj.assign(n+1, vi(0));
-    rep(i,0,m) {
-        int u, v; cin>>u>>v;
-        adj[u].pb(v);
-        adj[v].pb(u);
+    cin >> n >> m;
+    adj.assign(n + 1, vector<int>(0));
+    for (int i = 0; i < m; i++) {
+        int u, v;
+        cin >> u >> v;
+        adj[u].push_back(v);
+        adj[v].push_back(u);
     }
-    mnt.assign(n+1, -1);
-    tim.assign(n+1, -1);
-    vis.assign(n+1, 0);
-    t=0;
+    mnt.assign(n + 1, -1);
+    tim.assign(n + 1, -1);
+    vis.assign(n + 1, 0);
     bridges.clear();
+    t = 0;
     dfs(1, -1);
+
+    for (auto [i, j] : bridges)
+        cout << i << ' ' << j << '\n';
 }
