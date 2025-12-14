@@ -42,6 +42,7 @@ void ntt(vector<int> & a, bool invert) {
     }
 }
 
+//Multiply 2 polynomials under mod M in O(nlogn) time
 vector<int> multiply(vector<int> const& a, vector<int> const& b) {
     vector<int> fa(a.begin(), a.end()), fb(b.begin(), b.end());
     int n = 1;
