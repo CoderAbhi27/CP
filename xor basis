@@ -1,0 +1,15 @@
+vector<int> get_basis(vector<int> a) {
+    set<int, greater<int>> basis;
+    for(auto x:a) {
+        for(auto i:basis) {
+            int msb = 63 - __builtin_clzll(i);
+            if(x & (1LL<<msb)) {
+                x ^= i;
+            }
+        }
+        if(x) {
+            basis.insert(x);
+        }
+    }
+    return vector<int>(basis.begin(), basis.end());
+}
