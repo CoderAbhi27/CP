@@ -1,0 +1,62 @@
+#define ld long double
+
+const ld PI = acos(-1);
+const ld eps = 1e-10;
+
+struct Point{
+    ld x, y;
+
+    Point operator+(const Point &p) const {
+        return {x + p.x, y + p.y};
+    }
+    Point operator-(const Point &p) const {
+        return {x - p.x, y - p.y};
+    }
+    Point operator*(const ld t) const {
+        return {t*x, t*y};
+    }
+};
+
+ld dot(Point a, Point b) {
+    return a.x*b.x + a.y*b.y;
+}
+
+ld abs(Point a) {
+    return sqrtl(dot(a, a));
+}
+
+ld angle(Point v1, Point v2) {
+    ld c = dot(v1, v2)/abs(v1)/abs(v2);
+    c = max(-1.0L, min(1.0L, c));
+    return acos(c);
+}
+
+ld slope(Point v) {
+    return v.y/v.x;
+}
+
+Point inter(Point p1, Point p2, Point p3, Point p4) {
+    ld m1 = slope(p2 - p1);
+    ld m2 = slope(p4 - p3);
+    if((isinf(m1) && isinf(m2)) || abs(m1 - m2) < eps) {
+        return {NAN, NAN};
+    }
+
+    ld c1 = p1.y - m1*p1.x;
+    ld c2 = p3.y - m2*p3.x;
+    
+    if(isinf(m1)){
+        ld x = p1.x;
+        ld y = m2*x + c2;
+        return {x,y};
+    }
+    if(isinf(m2)){
+        ld x = p3.x;
+        ld y = m1*x + c1;
+        return {x,y};
+    }
+
+    ld x = (c1-c2)/(m2-m1);
+    ld y = m1*x + c1;
+    return {x,y};
+}
